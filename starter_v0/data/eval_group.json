@@ -375,7 +375,7 @@
     "id": "G15_parallel_summary",
     "phase": "B",
     "suite": "group",
-    "query": "Đọc hai bài này rồi tóm tắt điểm khác nhau giữa chúng: https://openai.com/index/unlocking-self-improvement-gpt-red// và https://www.anthropic.com/research",
+    "query": "Đọc hai bài này rồi tóm tắt điểm khác nhau giữa chúng: https://openai.com/index/unlocking-self-improvement-gpt-red// và https://www.anthropic.com/research/economic-index-june-2026-report",
     "failure_type": "wrong_tool",
     "expect": {
       "tool_calls": [
@@ -388,7 +388,7 @@
         {
           "name": "fetch",
           "args": {
-            "url": "https://www.anthropic.com/research"
+            "url": "https://www.anthropic.com/research/economic-index-june-2026-report"
           }
         },
         {
@@ -404,6 +404,205 @@
       "difficulty": "hard",
       "what_it_tests": "Nhiều fetch rồi tổng hợp bằng summarize."
     }
+  },
+  {
+    "id": "G16_compare_paper_contents",
+    "phase": "B",
+    "suite": "group",
+    "query": "So sánh nội dung của hai bài báo về Retrieval-Augmented Generation và Agentic AI.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "papers",
+          "args": {
+            "query": "Retrieval-Augmented Generation"
+          }
+        },
+        {
+          "name": "papers",
+          "args": {
+            "query": "Agentic AI"
+          }
+        },
+        {
+          "name": "paper_text",
+          "args": {}
+        },
+        {
+          "name": "paper_text",
+          "args": {}
+        },
+        {
+          "name": "compare",
+          "args": {
+            "focus": "methodology and contributions"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "paper_compare",
+      "difficulty": "hard",
+      "what_it_tests": "Search paper → đọc nội dung → compare."
+    }
+  },
+  {
+    "id": "G17_compare_policy_documents",
+    "phase": "B",
+    "suite": "group",
+    "query": "So sánh chính sách về Data Privacy và External Publishing.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "policy",
+          "args": {
+            "query": "Data Privacy",
+            "policy_area": "data_privacy"
+          }
+        },
+        {
+          "name": "policy",
+          "args": {
+            "query": "External Publishing",
+            "policy_area": "external_publishing"
+          }
+        },
+        {
+          "name": "compare",
+          "args": {
+            "focus": "differences"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "policy_compare",
+      "difficulty": "medium",
+      "what_it_tests": "Compare hai policy nội bộ."
+    }
+  },
+  {
+    "id": "G18_multiturn_compare_news",
+    "phase": "B",
+    "suite": "group",
+    "turns": [
+      {
+        "role": "user",
+        "content": "Tìm tin tức hôm nay về OpenAI."
+      },
+      {
+        "role": "user",
+        "content": "Thêm Anthropic."
+      },
+      {
+        "role": "user",
+        "content": "So sánh hai bên."
+      }
+    ],
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "lookup",
+          "args": {
+            "query": "OpenAI",
+            "topic": "news",
+            "timeframe": "day"
+          }
+        },
+        {
+          "name": "lookup",
+          "args": {
+            "query": "Anthropic",
+            "topic": "news",
+            "timeframe": "day"
+          }
+        },
+        {
+          "name": "compare",
+          "args": {
+            "focus": "latest developments"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "multiturn_compare_news",
+      "difficulty": "medium",
+      "what_it_tests": "Carry context rồi compare."
+    }
+  },
+  {
+    "id": "G19_compare_social_search",
+    "phase": "B",
+    "suite": "group",
+    "query": "So sánh các bài đăng mới nhất về GPT-5 và Claude AI trên mạng xã hội.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "social_search",
+          "args": {
+            "query": "GPT-5",
+            "search_type": "Latest"
+          }
+        },
+        {
+          "name": "social_search",
+          "args": {
+            "query": "Claude AI",
+            "search_type": "Latest"
+          }
+        },
+        {
+          "name": "compare",
+          "args": {
+            "focus": "main discussion topics"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "social_compare",
+      "difficulty": "easy",
+      "what_it_tests": "Parallel social_search rồi compare."
+    }
+  },
+  {
+    "id": "G20_compare_after_fetch",
+    "phase": "B",
+    "suite": "group",
+    "query": "Đọc hai bài này rồi cho biết bài nào tập trung hơn vào AI Agents: https://openai.com/index/scientific-computing-agentic-ai/ và https://www.anthropic.com/research/economic-index-june-2026-report",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://openai.com/index/scientific-computing-agentic-ai/"
+          }
+        },
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://www.anthropic.com/research/economic-index-june-2026-report"
+          }
+        },
+        {
+          "name": "compare",
+          "args": {
+            "focus": "AI Agents"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "fetch_compare",
+      "difficulty": "medium",
+      "what_it_tests": "Fetch hai URL rồi compare theo một tiêu chí cụ thể."
+    }
   }
-  ]
+]
 }
