@@ -34,13 +34,74 @@ st.set_page_config(
     layout="wide",
 )
 
+# Initialize Session State
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "history" not in st.session_state:
+    st.session_state.history = []
+if "transcript" not in st.session_state:
+    st.session_state.transcript = None
+if "transcript_path" not in st.session_state:
+    st.session_state.transcript_path = None
+if "turn_index" not in st.session_state:
+    st.session_state.turn_index = 0
+
+# Sidebar - Provider & API Key Setup
+st.sidebar.title("🔬 Agent Config & Credentials")
+
+provider_name = st.sidebar.selectbox(
+    "Select Provider",
+    options=["openrouter", "openai", "anthropic", "gemini"],
+    index=0,
+)
+
+model_override_input = st.sidebar.text_input(
+    "Model Name (Override)",
+    value="",
+    help="e.g. openai/gpt-4o-mini, gpt-4o-mini, claude-3-5-sonnet, gemini-2.5-flash. Leave blank for provider default.",
+)
+model_override = model_override_input.strip() if model_override_input.strip() else None
+
+with st.sidebar.expander("API Key Settings", expanded=True):
+    st.caption("Vui lòng nhập API Key của bạn trực tiếp tại đây:")
+    openrouter_key = st.text_input("OPENROUTER_API_KEY", value="", type="password", placeholder="Nhập OpenRouter API Key...")
+    openai_key = st.text_input("OPENAI_API_KEY", value="", type="password", placeholder="Nhập OpenAI API Key...")
+    anthropic_key = st.text_input("ANTHROPIC_API_KEY", value="", type="password", placeholder="Nhập Anthropic API Key...")
+    gemini_key = st.text_input("GEMINI_API_KEY", value="", type="password", placeholder="Nhập Gemini API Key...")
+
+# Set or clear environment keys based strictly on UI user inputs
+if openrouter_key.strip():
+    os.environ["OPENROUTER_API_KEY"] = openrouter_key.strip()
+else:
+    os.environ.pop("OPENROUTER_API_KEY", None)
+
+if openai_key.strip():
+    os.environ["OPENAI_API_KEY"] = openai_key.strip()
+else:
+    os.environ.pop("OPENAI_API_KEY", None)
+
+if anthropic_key.strip():
+    os.environ["ANTHROPIC_API_KEY"] = anthropic_key.strip()
+else:
+    os.environ.pop("ANTHROPIC_API_KEY", None)
+
+if gemini_key.strip():
+    os.environ["GEMINI_API_KEY"] = gemini_key.strip()
+else:
+    os.environ.pop("GEMINI_API_KEY", None)
+
+
+# Helper for secret redaction
 def get_secret_strings() -> list[str]:
-    """Collect API keys from env to ensure they are never displayed in UI/logs."""
-    secrets = []
+    """Collect API keys from env and UI inputs to ensure they are never displayed in UI/logs."""
+    secrets = set()
     for key, val in os.environ.items():
         if ("KEY" in key or "TOKEN" in key or "SECRET" in key or "HOST" in key) and val and len(str(val)) > 5:
-            secrets.append(str(val))
-    return secrets
+            secrets.add(str(val))
+    for k in [openrouter_key, openai_key, anthropic_key, gemini_key]:
+        if k and len(k.strip()) > 5:
+            secrets.add(k.strip())
+    return list(secrets)
 
 def sanitize_value(value: Any, secrets: list[str]) -> Any:
     """Recursively scrub known secrets from UI output."""
@@ -55,33 +116,7 @@ def sanitize_value(value: Any, secrets: list[str]) -> Any:
         return [sanitize_value(item, secrets) for item in value]
     return value
 
-# Initialize Session State
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "history" not in st.session_state:
-    st.session_state.history = []
-if "transcript" not in st.session_state:
-    st.session_state.transcript = None
-if "transcript_path" not in st.session_state:
-    st.session_state.transcript_path = None
-if "turn_index" not in st.session_state:
-    st.session_state.turn_index = 0
-
-# Sidebar Settings
-st.sidebar.title("🔬 Agent Config & Versioning")
-
-provider_name = st.sidebar.selectbox(
-    "Provider",
-    options=["openrouter", "openai", "anthropic", "gemini"],
-    index=0,
-)
-
-model_override_input = st.sidebar.text_input(
-    "Model Override (Optional)",
-    value="",
-    help="Leave blank to use provider default from code/env.",
-)
-model_override = model_override_input.strip() if model_override_input.strip() else None
+st.sidebar.markdown("---")
 
 version_label = st.sidebar.text_input(
     "Artifact Version Label",
@@ -106,12 +141,11 @@ if system_prompt_path.exists() and tools_path.exists():
     except Exception as e:
         st.sidebar.error(f"Version error: {e}")
 
-st.sidebar.markdown("---")
 if artifact_version_info:
     st.sidebar.subheader("📌 Current Artifact Version")
     st.sidebar.code(artifact_version_info.artifact_version, language="text")
-    st.sidebar.caption(f"Prompt hash: `{artifact_version_info.prompt_hash}`")
-    st.sidebar.caption(f"Tools hash: `{artifact_version_info.tools_hash}`")
+    st.sidebar.caption(f"Prompt hash: `{artifact_version_info.prompt_hash[:16]}...`")
+    st.sidebar.caption(f"Tools hash: `{artifact_version_info.tools_hash[:16]}...`")
 
 if st.sidebar.button("🔄 Reset Chat Session"):
     st.session_state.messages = []
