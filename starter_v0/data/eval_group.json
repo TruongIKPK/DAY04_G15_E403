@@ -3,5 +3,407 @@
   "dataset_role": "group",
   "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_parallel_two_urls",
+      "phase": "B",
+      "query": "Đọc và tóm tắt giúp mình hai bài này: https://openai.com/index/scientific-computing-agentic-ai/ và https://www.anthropic.com/news/hard-questions",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/index/scientific-computing-agentic-ai/"
+            }
+          },
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://www.anthropic.com/news/hard-questions"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Parallel fetch nhiều URL."
+      }
+    },
+    {
+      "id": "G02_two_people_timeline",
+      "phase": "B",
+      "query": "Lấy tweet mới nhất của Sam Altman và Elon Musk.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "sama"
+            }
+          },
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Một request cần gọi timeline cho hai account."
+      }
+    },
+    {
+      "id": "G03_latest_search_type",
+      "phase": "B",
+      "query": "Cho mình các tweet mới nhất về Claude AI.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "Claude AI",
+              "search_type": "Latest"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Latest -> search_type=Latest."
+      }
+    },
+    {
+      "id": "G04_missing_topic",
+      "phase": "B",
+      "query": "Tìm tin tức hôm nay giúp mình.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Thiếu chủ đề tìm kiếm."
+      }
+    },
+    {
+      "id": "G05_parallel_news_and_timeline",
+      "phase": "B",
+      "query": "Cho mình tin AI hôm nay và tweet mới nhất của Sam Altman.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "sama"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Parallel web search + timeline."
+      }
+    },
+    {
+      "id": "G06_multiturn_change_person",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Lấy tweet mới nhất của Sam Altman."
+        },
+        {
+          "role": "user",
+          "content": "Đổi sang Elon Musk."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ lấy 2 tweet."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 2
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Context overwrite person + limit."
+      }
+    },
+    {
+      "id": "G07_multiturn_change_timeframe",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay."
+        },
+        {
+          "role": "user",
+          "content": "Không, trong tháng này."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ về OpenAI."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "OpenAI",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Carry context + overwrite timeframe."
+      }
+    },
+    {
+      "id": "G08_multiturn_url_then_summary",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Đọc bài viết giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "https://openai.com/research"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ đọc đúng link đó."
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/research"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Clarify rồi fetch."
+      }
+    },
+    {
+      "id": "G09_multiturn_switch_tool",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tweet về GPT-5."
+        },
+        {
+          "role": "user",
+          "content": "Thôi chuyển sang tìm tin tức trên web."
+        },
+        {
+          "role": "user",
+          "content": "Vẫn là GPT-5."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "GPT-5",
+              "topic": "news"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Switch từ social search sang web."
+      }
+    },
+    {
+      "id": "G10_multiturn_parallel",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Cho mình tin AI hôm nay."
+        },
+        {
+          "role": "user",
+          "content": "Thêm tweet mới nhất của OpenAI."
+        },
+        {
+          "role": "user",
+          "content": "Giữ cả hai kết quả."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "OpenAI"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Carry context và gọi đồng thời hai tool."
+      }
+    },
+    {
+    "id": "G11_summarize_text",
+    "phase": "B",
+    "suite": "group",
+    "query": "Tóm tắt đoạn sau trong 3 câu: Large language models have achieved remarkable performance across many NLP tasks. However, they still suffer from hallucination and factual inconsistency. Recent research focuses on retrieval-augmented generation to improve factual accuracy.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "summarize",
+          "args": {
+            "max_sentences": 3
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "summarize_text",
+      "difficulty": "easy",
+      "what_it_tests": "Có sẵn nội dung → chỉ gọi summarize."
+    }
+  },{
+    "id": "G12_fetch_then_summarize",
+    "phase": "B",
+    "suite": "group",
+    "query": "Đọc và tóm tắt bài này trong 5 gạch đầu dòng: https://openai.com/research/",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://openai.com/research/"
+          }
+        },
+        {
+          "name": "summarize",
+          "args": {
+            "style": "bullet",
+            "max_items": 5
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "fetch_then_summarize",
+      "difficulty": "medium",
+      "what_it_tests": "Đọc URL rồi mới tóm tắt."
+    }
+  },
+  {
+    "id": "G13_news_digest",
+    "phase": "B",
+    "suite": "group",
+    "query": "Tìm tin AI hôm nay rồi tóm tắt mỗi tin trong 1 câu.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "lookup",
+          "args": {
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day"
+          }
+        },
+        {
+          "name": "summarize",
+          "args": {
+            "max_sentences": 1
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "news_summary",
+      "difficulty": "medium",
+      "what_it_tests": "Lookup rồi summarize."
+    }
+  },{
+    "id": "G15_parallel_summary",
+    "phase": "B",
+    "suite": "group",
+    "query": "Đọc hai bài này rồi tóm tắt điểm khác nhau giữa chúng: https://openai.com/research/ và https://www.anthropic.com/research",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://openai.com/research/"
+          }
+        },
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://www.anthropic.com/research"
+          }
+        },
+        {
+          "name": "summarize",
+          "args": {
+            "style": "comparison"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "parallel_summary",
+      "difficulty": "hard",
+      "what_it_tests": "Nhiều fetch rồi tổng hợp bằng summarize."
+    }
+  }
+  ]
 }
