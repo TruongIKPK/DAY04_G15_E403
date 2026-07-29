@@ -7,20 +7,20 @@
     {
       "id": "G01_parallel_two_urls",
       "phase": "B",
-      "query": "Đọc và tóm tắt giúp mình hai bài này: https://openai.com/news và https://www.anthropic.com/news",
+      "query": "Đọc và tóm tắt giúp mình hai bài này: https://openai.com/index/scientific-computing-agentic-ai/ và https://www.anthropic.com/news/hard-questions",
       "failure_type": "wrong_tool",
       "expect": {
         "tool_calls": [
           {
             "name": "fetch",
             "args": {
-              "url": "https://openai.com/news"
+              "url": "https://openai.com/index/scientific-computing-agentic-ai/"
             }
           },
           {
             "name": "fetch",
             "args": {
-              "url": "https://www.anthropic.com/news"
+              "url": "https://www.anthropic.com/news/hard-questions"
             }
           }
         ]
@@ -291,6 +291,119 @@
       "metadata": {
         "what_it_tests": "Carry context và gọi đồng thời hai tool."
       }
+    },
+    {
+    "id": "G11_summarize_text",
+    "phase": "B",
+    "suite": "group",
+    "query": "Tóm tắt đoạn sau trong 3 câu: Large language models have achieved remarkable performance across many NLP tasks. However, they still suffer from hallucination and factual inconsistency. Recent research focuses on retrieval-augmented generation to improve factual accuracy.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "summarize",
+          "args": {
+            "max_sentences": 3
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "summarize_text",
+      "difficulty": "easy",
+      "what_it_tests": "Có sẵn nội dung → chỉ gọi summarize."
     }
+  },{
+    "id": "G12_fetch_then_summarize",
+    "phase": "B",
+    "suite": "group",
+    "query": "Đọc và tóm tắt bài này trong 5 gạch đầu dòng: https://openai.com/research/",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://openai.com/research/"
+          }
+        },
+        {
+          "name": "summarize",
+          "args": {
+            "style": "bullet",
+            "max_items": 5
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "fetch_then_summarize",
+      "difficulty": "medium",
+      "what_it_tests": "Đọc URL rồi mới tóm tắt."
+    }
+  },
+  {
+    "id": "G13_news_digest",
+    "phase": "B",
+    "suite": "group",
+    "query": "Tìm tin AI hôm nay rồi tóm tắt mỗi tin trong 1 câu.",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "lookup",
+          "args": {
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day"
+          }
+        },
+        {
+          "name": "summarize",
+          "args": {
+            "max_sentences": 1
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "news_summary",
+      "difficulty": "medium",
+      "what_it_tests": "Lookup rồi summarize."
+    }
+  },{
+    "id": "G15_parallel_summary",
+    "phase": "B",
+    "suite": "group",
+    "query": "Đọc hai bài này rồi tóm tắt điểm khác nhau giữa chúng: https://openai.com/research/ và https://www.anthropic.com/research",
+    "failure_type": "wrong_tool",
+    "expect": {
+      "tool_calls": [
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://openai.com/research/"
+          }
+        },
+        {
+          "name": "fetch",
+          "args": {
+            "url": "https://www.anthropic.com/research"
+          }
+        },
+        {
+          "name": "summarize",
+          "args": {
+            "style": "comparison"
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "skill": "parallel_summary",
+      "difficulty": "hard",
+      "what_it_tests": "Nhiều fetch rồi tổng hợp bằng summarize."
+    }
+  }
   ]
 }
