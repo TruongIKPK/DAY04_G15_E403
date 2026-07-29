@@ -1,5 +1,12 @@
 # Day 04 Lab v2 — Research Agent Tool Eval
 
+Trần Duy Trường - 2A202601247
+Nguyễn Khánh Toàn - 2A202601843
+Hồ Văn Thi - 2A202601907
+Bùi Đặng Quốc An - 2A202601799
+Nguyễn Quang Huy - 2A202601165
+Lê Nguyễn Phi Trường - 2A202601541
+
 ## Brief
 
 Trong lab này, nhóm build một research agent nhỏ nhưng chạy thật. Agent nhận request của user, chọn tool, truyền arguments, chạy tool thật, lưu full JSON log, rồi dùng log đó để tối ưu prompt/tool declaration qua nhiều version.
