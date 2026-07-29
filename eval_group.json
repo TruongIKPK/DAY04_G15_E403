@@ -1,0 +1,319 @@
+{
+  "dataset_id": "day04_v2_research_group_g15",
+  "dataset_role": "group",
+  "description": "10 eval cases do nhóm G15 thiết kế: 5 single-turn và 5 multi-turn, tập trung vào routing, arguments, clarification, scope và carry-over/correction.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "G15_S01_social_top_limit",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm 7 tweet phổ biến nhất về AI agents.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI agents",
+              "search_type": "Top",
+              "limit": 7
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "social_search_arguments",
+        "difficulty": "easy",
+        "what_it_tests": "Phân biệt tìm theo chủ đề với timeline và trích đúng Top cùng limit=7."
+      }
+    },
+    {
+      "id": "G15_S02_web_news_today_limit",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm 4 tin tức cybersecurity hôm nay trên web.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "cybersecurity",
+              "topic": "news",
+              "timeframe": "day",
+              "max_results": 4
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "web_news_arguments",
+        "difficulty": "medium",
+        "what_it_tests": "Giữ nguyên chủ đề và ánh xạ hôm nay sang news/day cùng max_results=4."
+      }
+    },
+    {
+      "id": "G15_S03_two_explicit_urls",
+      "phase": "B",
+      "suite": "group",
+      "query": "Đọc và tóm tắt riêng hai URL này: https://openai.com/research/ và https://www.anthropic.com/research",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/research/"
+            }
+          },
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://www.anthropic.com/research"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "parallel_url_fetch",
+        "difficulty": "medium",
+        "what_it_tests": "Hai URL tường minh phải tạo hai lời gọi fetch và không được thay bằng lookup."
+      }
+    },
+    {
+      "id": "G15_S04_missing_account",
+      "phase": "B",
+      "suite": "group",
+      "query": "Lấy 7 bài đăng mới nhất của tài khoản đó giúp mình.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "missing_account_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Không có account trong single-turn nên phải hỏi lại và không được tự đoán handle."
+      }
+    },
+    {
+      "id": "G15_S05_confirm_external_publish",
+      "phase": "B",
+      "suite": "group",
+      "query": "Hãy đăng bản tổng hợp nghiên cứu này lên Telegram ngay.",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "confirm_before_publish",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu publish ra Telegram phải hỏi xác nhận yes/no trước và không được gọi send ngay."
+      }
+    },
+    {
+      "id": "G15_M01_correct_account_and_limit",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Lấy 8 tweet mới nhất của Sam Altman."
+        },
+        {
+          "role": "user",
+          "content": "Đổi sang Andrej Karpathy nhé."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ lấy 4 tweet và vẫn dùng tài khoản vừa sửa."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "karpathy",
+              "limit": 4
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_correction",
+        "difficulty": "medium",
+        "what_it_tests": "Ưu tiên account và limit đã sửa ở các lượt sau thay vì dùng giá trị ban đầu."
+      }
+    },
+    {
+      "id": "G15_M02_switch_web_to_social",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tin quantum computing trong tuần này trên web."
+        },
+        {
+          "role": "user",
+          "content": "Bỏ web và chuyển sang tìm trên Twitter."
+        },
+        {
+          "role": "user",
+          "content": "Giữ chủ đề quantum computing nhưng lấy 6 tweet phổ biến nhất."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "quantum computing",
+              "search_type": "Top",
+              "limit": 6
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_tool_switch",
+        "difficulty": "hard",
+        "what_it_tests": "Chuyển từ web sang social nhưng vẫn carry chủ đề và áp dụng Top cùng limit mới."
+      }
+    },
+    {
+      "id": "G15_M03_correct_web_timeframe_and_limit",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm 8 tin climate tech trong tháng này trên web."
+        },
+        {
+          "role": "user",
+          "content": "Đổi timeframe sang tuần này."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ lấy 3 kết quả và vẫn giữ chủ đề climate tech."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "climate tech",
+              "topic": "news",
+              "timeframe": "week",
+              "max_results": 3
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_web_argument_correction",
+        "difficulty": "hard",
+        "what_it_tests": "Carry chủ đề nhưng áp dụng timeframe và limit đã được sửa ở các lượt sau."
+      }
+    },
+    {
+      "id": "G15_M04_cancel_research_request",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tin AI hôm nay giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "Thôi, hủy yêu cầu tìm kiếm đó."
+        },
+        {
+          "role": "user",
+          "content": "Không cần kết quả nữa; chỉ xác nhận đã hủy và không dùng tool."
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "skill": "cancelled_research_boundary",
+        "difficulty": "hard",
+        "what_it_tests": "Yêu cầu research đã bị hủy ở lượt sau nên lượt cuối không được gọi lại lookup hoặc tool khác."
+      }
+    },
+    {
+      "id": "G15_M05_parallel_sources_after_topic_change",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Mình muốn theo dõi tin về AI agents."
+        },
+        {
+          "role": "user",
+          "content": "Đổi chủ đề sang robotics."
+        },
+        {
+          "role": "user",
+          "content": "Với robotics, trong lượt này hãy tìm cả tin web hôm nay và tweet mới nhất."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "robotics",
+              "search_type": "Latest"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_parallel_research",
+        "difficulty": "hard",
+        "what_it_tests": "Carry chủ đề đã đổi và gọi đồng thời đúng hai nguồn web news cùng social search."
+      }
+    }
+  ]
+}
