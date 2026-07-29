@@ -1,7 +1,118 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
+  "description": "Team-authored eval suite: 5 single-turn cases and 5 multi-turn cases for the Day04 research agent.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_ai_news_daily_digest",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tim tin AI hom nay tren web, toi da 3 ket qua",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"query": "AI", "topic": "news", "timeframe": "day", "max_results": 3}}]},
+      "metadata": {"what_it_tests": "Map today/current news to lookup topic=news timeframe=day and preserve max_results=3."}
+    },
+    {
+      "id": "G02_specific_url_fetch",
+      "phase": "B",
+      "suite": "group",
+      "query": "Doc va tom tat URL nay: https://openai.com/research/",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "fetch", "args": {"url": "https://openai.com/research/"}}]},
+      "metadata": {"what_it_tests": "Specific URL must route to fetch, not lookup."}
+    },
+    {
+      "id": "G03_missing_account_clarify",
+      "phase": "B",
+      "suite": "group",
+      "query": "Lay 4 tweet moi nhat giup minh",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"what_it_tests": "Tweet timeline request without an account must ask for the handle/person."}
+    },
+    {
+      "id": "G04_source_quality_local",
+      "phase": "B",
+      "suite": "group",
+      "query": "Trong cac source da co, chon nguon dang tin nhat de cite ve AI agent evaluation",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "source_quality", "args": {"question": "AI agent evaluation"}}]},
+      "metadata": {"what_it_tests": "Requests for strongest/reliable sources should use the team-added source_quality tool."}
+    },
+    {
+      "id": "G05_confirm_before_telegram",
+      "phase": "B",
+      "suite": "group",
+      "query": "Gui ban tin AI nay len Telegram cua nhom",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"what_it_tests": "External send action requires yes/no confirmation before send."}
+    },
+    {
+      "id": "GM01_carry_news_topic",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tin AI trong tuan nay co gi moi?"},
+        {"role": "user", "content": "Doi chu de sang robotics"},
+        {"role": "user", "content": "Van lay tin trong tuan nay nhe"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"query": "robotics", "topic": "news", "timeframe": "week"}}]},
+      "metadata": {"what_it_tests": "Carry timeframe=week and news intent while replacing the topic with robotics."}
+    },
+    {
+      "id": "GM02_handle_correction",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Lay tweet moi nhat cua Sam Altman"},
+        {"role": "user", "content": "Khong, doi sang Elon Musk"},
+        {"role": "user", "content": "Lay dung 2 tweet moi nhat"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "timeline", "args": {"screenname": "elonmusk", "limit": 2}}]},
+      "metadata": {"what_it_tests": "Use corrected person and corrected limit in latest turn."}
+    },
+    {
+      "id": "GM03_url_after_clarify",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tom tat bai nay giup minh"},
+        {"role": "user", "content": "Link day: https://www.anthropic.com/research"},
+        {"role": "user", "content": "Chi doc dung link do"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "fetch", "args": {"url": "https://www.anthropic.com/research"}}]},
+      "metadata": {"what_it_tests": "After URL is supplied in context, latest turn should fetch that exact URL."}
+    },
+    {
+      "id": "GM04_social_top_carryover",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Moi nguoi noi gi ve OpenAI tren Twitter?"},
+        {"role": "user", "content": "Chi lay cac bai pho bien nhat"},
+        {"role": "user", "content": "Giu chu de OpenAI"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "social_search", "args": {"query": "OpenAI", "search_type": "Top"}}]},
+      "metadata": {"what_it_tests": "Carry topic OpenAI and switch social_search sort to Top."}
+    },
+    {
+      "id": "GM05_policy_area_carryover",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tim policy ve viec cite source"},
+        {"role": "user", "content": "Trong tai lieu noi bo cua cong ty"},
+        {"role": "user", "content": "Lay 2 muc lien quan nhat"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "policy", "args": {"query": "cite source", "policy_area": "source_citation", "top_k": 2}}]},
+      "metadata": {"what_it_tests": "Internal citation-policy request should route to policy with source_citation area and top_k=2."}
+    }
+  ]
 }
