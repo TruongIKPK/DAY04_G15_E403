@@ -197,7 +197,7 @@
         },
         {
           "role": "user",
-          "content": "https://openai.com/research"
+          "content": "https://openai.com/index/unlocking-self-improvement-gpt-red/"
         },
         {
           "role": "user",
@@ -210,7 +210,7 @@
           {
             "name": "fetch",
             "args": {
-              "url": "https://openai.com/research"
+              "url": "https://openai.com/index/unlocking-self-improvement-gpt-red/"
             }
           }
         ]
@@ -317,14 +317,14 @@
     "id": "G12_fetch_then_summarize",
     "phase": "B",
     "suite": "group",
-    "query": "Đọc và tóm tắt bài này trong 5 gạch đầu dòng: https://openai.com/research/",
+    "query": "Đọc và tóm tắt bài này trong 5 gạch đầu dòng: https://openai.com/index/unlocking-self-improvement-gpt-red//",
     "failure_type": "wrong_tool",
     "expect": {
       "tool_calls": [
         {
           "name": "fetch",
           "args": {
-            "url": "https://openai.com/research/"
+            "url": "https://openai.com/index/unlocking-self-improvement-gpt-red//"
           }
         },
         {
@@ -375,14 +375,14 @@
     "id": "G15_parallel_summary",
     "phase": "B",
     "suite": "group",
-    "query": "Đọc hai bài này rồi tóm tắt điểm khác nhau giữa chúng: https://openai.com/research/ và https://www.anthropic.com/research",
+    "query": "Đọc hai bài này rồi tóm tắt điểm khác nhau giữa chúng: https://openai.com/index/unlocking-self-improvement-gpt-red// và https://www.anthropic.com/research",
     "failure_type": "wrong_tool",
     "expect": {
       "tool_calls": [
         {
           "name": "fetch",
           "args": {
-            "url": "https://openai.com/research/"
+            "url": "https://openai.com/index/unlocking-self-improvement-gpt-red//"
           }
         },
         {
