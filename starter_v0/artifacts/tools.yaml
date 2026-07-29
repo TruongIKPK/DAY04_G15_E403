@@ -77,6 +77,28 @@ tools:
         headline: {type: string, default: "", description: "Tiêu đề"}
       required: [items, template]
 
+  - name: summarize
+    description: "Tóm tắt nội dung đã có thành các ý chính ngắn gọn; không tìm kiếm hay tải dữ liệu mới."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Văn bản cần tóm tắt"}
+        items:
+          type: array
+          default: []
+          description: "Danh sách item đã thu thập"
+          items:
+            type: object
+            properties:
+              title: {type: string}
+              url: {type: string}
+              source: {type: string}
+              summary: {type: string}
+        max_sentences: {type: integer, default: 5, description: "Số ý chính tối đa"}
+        focus: {type: string, default: "", description: "Chủ đề hoặc câu hỏi cần ưu tiên"}
+        language: {type: string, default: "auto", description: "Gợi ý ngôn ngữ"}
+      required: []
+
   # ---------------- Bonus tools ----------------
   - name: send
     description: "Gửi một đoạn văn bản đi."
