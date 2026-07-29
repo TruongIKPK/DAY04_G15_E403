@@ -9,7 +9,7 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Ask the user for missing required information or request confirmation before an external side effect. Do not use when all required information is already available."
     parameters:
       type: object
       properties:
@@ -19,7 +19,7 @@ tools:
       required: [question]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây."
+    description: "Get recent posts from one specific account. Use only when a person/account is identified. screenname must be the account handle without @."
     parameters:
       type: object
       properties:
@@ -28,7 +28,7 @@ tools:
       required: [screenname]
 
   - name: social_search
-    description: "Tìm trên mạng xã hội."
+    description: "Search social posts by topic or keyword. Use Top for popular/top posts and Latest for recent posts."
     parameters:
       type: object
       properties:
@@ -38,18 +38,18 @@ tools:
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Search the web. Use topic=news for news/current-events requests. Preserve the user's core subject as query; do not append generic words such as news unless they are part of the subject."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
+        query: {type: string, default: "", description: "Core search subject, for example AI or robotics. Do not rewrite AI as AI news."}
+        topic: {type: string, enum: [general, news], default: "general", description: "Use news for tin tức, current events, hôm nay, tuần này; otherwise general."}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Map hôm nay/today to day and tuần này/this week to week."}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: "Read one explicit URL. Never invent or guess a URL; use clarify when it is missing."
     parameters:
       type: object
       properties:
@@ -57,7 +57,7 @@ tools:
       required: [url]
 
   - name: format
-    description: "Trình bày dữ liệu đã có thành văn bản."
+    description: "Format items already collected by other tools. This tool does not search, fetch, answer unrelated questions, or send content."
     parameters:
       type: object
       properties:
@@ -79,7 +79,7 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: "Send text to Telegram only after explicit user confirmation. Never use this tool as a substitute for answering the user."
     parameters:
       type: object
       properties:
