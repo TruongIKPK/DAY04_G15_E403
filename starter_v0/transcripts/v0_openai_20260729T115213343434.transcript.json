@@ -1,0 +1,95 @@
+{
+  "transcript_id": "v0_openai_20260729T115213343434",
+  "version": "v0",
+  "artifact_version": "v0+pc71c3fd0b4ba+t067f1c5c684b",
+  "prompt_hash": "c71c3fd0b4baca63a8906d961c5be40702abe291823a873c2e2d8ad964e2b31b",
+  "tools_hash": "067f1c5c684b8b3d64a96f7b4d9729f79e66656cda29236b2b74f748fba6551e",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "system_prompt": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T11:52:13",
+  "updated_at": "2026-07-29T11:52:19",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T11:52:13",
+      "user": "Hôm nay là ngày nào",
+      "status": "answered",
+      "assistant_text": "Hôm nay là Thứ Tư, ngày 29 tháng 07 năm 2026.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "get_time",
+              "args": {
+                "offset_days": 0
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "get_time",
+              "args": {
+                "offset_days": 0
+              },
+              "result": {
+                "tool": "get_time",
+                "current_time": "11:52:17",
+                "current_datetime": "2026-07-29 11:52:17",
+                "today": "2026-07-29",
+                "today_vi": "Thứ Tư, ngày 29/07/2026",
+                "yesterday": "2026-07-28",
+                "yesterday_vi": "Thứ Ba, ngày 28/07/2026",
+                "tomorrow": "2026-07-30",
+                "tomorrow_vi": "Thứ Năm, ngày 30/07/2026",
+                "target_date": "2026-07-29",
+                "target_date_vi": "Thứ Tư, ngày 29/07/2026",
+                "day_of_week": "Thứ Tư",
+                "day_of_week_en": "Wednesday",
+                "offset_days": 0,
+                "query": ""
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Hôm nay là Thứ Tư, ngày 29 tháng 07 năm 2026.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "get_time",
+          "args": {
+            "offset_days": 0
+          },
+          "result": {
+            "tool": "get_time",
+            "current_time": "11:52:17",
+            "current_datetime": "2026-07-29 11:52:17",
+            "today": "2026-07-29",
+            "today_vi": "Thứ Tư, ngày 29/07/2026",
+            "yesterday": "2026-07-28",
+            "yesterday_vi": "Thứ Ba, ngày 28/07/2026",
+            "tomorrow": "2026-07-30",
+            "tomorrow_vi": "Thứ Năm, ngày 30/07/2026",
+            "target_date": "2026-07-29",
+            "target_date_vi": "Thứ Tư, ngày 29/07/2026",
+            "day_of_week": "Thứ Tư",
+            "day_of_week_en": "Wednesday",
+            "offset_days": 0,
+            "query": ""
+          }
+        }
+      ],
+      "ended_at": "2026-07-29T11:52:19"
+    }
+  ]
+}

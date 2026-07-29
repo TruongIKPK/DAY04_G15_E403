@@ -1,0 +1,28 @@
+{
+  "transcript_id": "v0_openrouter_20260729T115026433188",
+  "version": "v0",
+  "artifact_version": "v0+pe6a9ca7c9a22+tb63a6baeee29",
+  "prompt_hash": "e6a9ca7c9a22eb941b9ebd0e158cff8500605ffbdaa5d6c849f45c5b67d36f4c",
+  "tools_hash": "b63a6baeee290dd82b458144b123385ff959bbb06bc941477c11f47d443c8136",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T11:50:26",
+  "updated_at": "2026-07-29T11:50:26",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T11:50:26",
+      "user": "Tweet mới nhất của Trump trên X",
+      "status": "provider_error",
+      "assistant_text": null,
+      "rounds": [],
+      "tool_events": [],
+      "error": "RuntimeError: Missing API key env var: OPENROUTER_API_KEY",
+      "ended_at": "2026-07-29T11:50:26"
+    }
+  ]
+}

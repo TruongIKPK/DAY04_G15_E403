@@ -1,0 +1,77 @@
+{
+  "transcript_id": "v0_openai_20260729T115255016671",
+  "version": "v0",
+  "artifact_version": "v0+pc71c3fd0b4ba+t067f1c5c684b",
+  "prompt_hash": "c71c3fd0b4baca63a8906d961c5be40702abe291823a873c2e2d8ad964e2b31b",
+  "tools_hash": "067f1c5c684b8b3d64a96f7b4d9729f79e66656cda29236b2b74f748fba6551e",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "system_prompt": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T11:52:55",
+  "updated_at": "2026-07-29T11:53:02",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T11:52:55",
+      "user": "Tin tức ngày hôm nay",
+      "status": "answered",
+      "assistant_text": "Hiện tại, tôi không thể truy cập tin tức ngày hôm nay do lỗi từ hệ thống. Bạn có muốn thử lại sau hoặc tìm kiếm thông tin khác không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "query": "",
+                "topic": "news",
+                "timeframe": "day"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "query": "",
+                "topic": "news",
+                "timeframe": "day"
+              },
+              "result": {
+                "tool": "web_search",
+                "error": "HTTPError",
+                "message": "400 Client Error: Bad Request for url: https://api.tavily.com/search"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Hiện tại, tôi không thể truy cập tin tức ngày hôm nay do lỗi từ hệ thống. Bạn có muốn thử lại sau hoặc tìm kiếm thông tin khác không?",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "",
+            "topic": "news",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "error": "HTTPError",
+            "message": "400 Client Error: Bad Request for url: https://api.tavily.com/search"
+          }
+        }
+      ],
+      "ended_at": "2026-07-29T11:53:02"
+    }
+  ]
+}

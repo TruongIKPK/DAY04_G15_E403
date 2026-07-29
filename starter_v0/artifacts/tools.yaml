@@ -42,7 +42,7 @@ tools:
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
+        query: {type: string, default: "tin tức mới nhất", description: "Từ khóa truy vấn (bắt buộc truyền từ khóa cụ thể, không để trống)"}
         topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
         timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
@@ -138,3 +138,12 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự"}
       required: [arxiv_url]
+
+  - name: get_time
+    description: "Tra cứu thời gian, ngày tháng hiện tại hoặc tính toán ngày trong quá khứ/tương lai (ví dụ: hôm nay, hôm qua, ngày mai, N ngày trước/sau, giờ hiện tại)."
+    parameters:
+      type: object
+      properties:
+        offset_days: {type: integer, default: 0, description: "Số ngày lệch so với hôm nay (ví dụ: -1 cho hôm qua, 0 cho hôm nay, 1 cho ngày mai)"}
+        query: {type: string, default: "", description: "Mô tả thời gian hoặc truy vấn (ví dụ: 'hôm nay', 'hôm qua', 'ngày mai', 'now')"}
+      required: []
