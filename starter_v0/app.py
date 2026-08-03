@@ -51,7 +51,7 @@ st.sidebar.title("🔬 Agent Config & Credentials")
 
 provider_name = st.sidebar.selectbox(
     "Select Provider",
-    options=["openrouter", "openai", "anthropic", "gemini"],
+    options=["openrouter", "openai", "anthropic", "gemini", "perplexity"],
     index=0,
 )
 
@@ -68,6 +68,7 @@ with st.sidebar.expander("API Key Settings", expanded=True):
     openai_key = st.text_input("OPENAI_API_KEY", value="", type="password", placeholder="Nhập OpenAI API Key...")
     anthropic_key = st.text_input("ANTHROPIC_API_KEY", value="", type="password", placeholder="Nhập Anthropic API Key...")
     gemini_key = st.text_input("GEMINI_API_KEY", value="", type="password", placeholder="Nhập Gemini API Key...")
+    perplexity_key = st.text_input("PERPLEXITY_API_KEY", value="", type="password", placeholder="Nhập Perplexity API Key...")
 
 # Set or clear environment keys based strictly on UI user inputs
 if openrouter_key.strip():
@@ -89,6 +90,12 @@ if gemini_key.strip():
     os.environ["GEMINI_API_KEY"] = gemini_key.strip()
 else:
     os.environ.pop("GEMINI_API_KEY", None)
+
+if perplexity_key.strip():
+    os.environ["PERPLEXITY_API_KEY"] = perplexity_key.strip()
+else:
+    os.environ.pop("PERPLEXITY_API_KEY", None)
+
 
 
 # Helper for secret redaction

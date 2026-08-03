@@ -1,0 +1,34 @@
+{
+  "transcript_id": "v0_perplexity_20260729T213517601284",
+  "version": "v0",
+  "artifact_version": "v0+p5a227fafee50+t91e46d089b81",
+  "prompt_hash": "5a227fafee502f2d9c723857279d03b81058610ba96f7e2cda958d491726e080",
+  "tools_hash": "91e46d089b815b4cdf1f2c20ffbd05f6b5b3034338e4798cbc9adaf732f2932b",
+  "provider": "perplexity",
+  "model": "openai/gpt-5-mini",
+  "system_prompt": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T21:35:17",
+  "updated_at": "2026-07-29T21:35:22",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T21:35:17",
+      "user": "Chào",
+      "status": "answered",
+      "assistant_text": "**“Chào”** trong tiếng Việt thường có nghĩa là **xin chào / chào hỏi**, dùng khi gặp mặt hoặc tạm biệt ai đó.[1][2][3]\n\nNgoài ra, từ này còn có thể dùng trong các ngữ cảnh khác như:\n\n- **Kính cẩn / chào cờ** trước điều thiêng liêng, cao quý.[2][3]\n- **Mời** ăn uống hoặc mua hàng (ví dụ: *chào hàng*).[2][3]\n- Là **thán từ** biểu lộ chán nản, thất vọng, hoặc không tin tưởng trong một số cách nói khẩu ngữ.[1]\n\nNếu bạn muốn, tôi có thể giải thích **cách dùng “chào” theo từng tình huống** như chào bạn bè, người lớn tuổi, hoặc khi tạm biệt.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "**“Chào”** trong tiếng Việt thường có nghĩa là **xin chào / chào hỏi**, dùng khi gặp mặt hoặc tạm biệt ai đó.[1][2][3]\n\nNgoài ra, từ này còn có thể dùng trong các ngữ cảnh khác như:\n\n- **Kính cẩn / chào cờ** trước điều thiêng liêng, cao quý.[2][3]\n- **Mời** ăn uống hoặc mua hàng (ví dụ: *chào hàng*).[2][3]\n- Là **thán từ** biểu lộ chán nản, thất vọng, hoặc không tin tưởng trong một số cách nói khẩu ngữ.[1]\n\nNếu bạn muốn, tôi có thể giải thích **cách dùng “chào” theo từng tình huống** như chào bạn bè, người lớn tuổi, hoặc khi tạm biệt.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-07-29T21:35:22"
+    }
+  ]
+}

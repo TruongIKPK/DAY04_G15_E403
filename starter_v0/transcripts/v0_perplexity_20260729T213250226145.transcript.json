@@ -1,0 +1,28 @@
+{
+  "transcript_id": "v0_perplexity_20260729T213250226145",
+  "version": "v0",
+  "artifact_version": "v0+p5a227fafee50+t91e46d089b81",
+  "prompt_hash": "5a227fafee502f2d9c723857279d03b81058610ba96f7e2cda958d491726e080",
+  "tools_hash": "91e46d089b815b4cdf1f2c20ffbd05f6b5b3034338e4798cbc9adaf732f2932b",
+  "provider": "perplexity",
+  "model": "openai/gpt-5-mini",
+  "system_prompt": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI-THUCCHIEN\\DAY04_G15_E403\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T21:32:50",
+  "updated_at": "2026-07-29T21:32:52",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T21:32:50",
+      "user": "Chào",
+      "status": "provider_error",
+      "assistant_text": null,
+      "rounds": [],
+      "tool_events": [],
+      "error": "BadRequestError: Error code: 400 - {'error': {'message': \"Invalid model 'openai/gpt-5-mini'. Permitted models can be found in the documentation at https://docs.perplexity.ai/docs/getting-started/models.\", 'type': 'invalid_model', 'code': 400}}",
+      "ended_at": "2026-07-29T21:32:52"
+    }
+  ]
+}
